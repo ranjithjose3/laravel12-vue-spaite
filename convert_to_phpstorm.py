@@ -1,0 +1,563 @@
+import html
+import json
+import re
+
+# Paste your full JSON here as a dictionary
+snippets = {
+    "Tailwind Table with Actions Main": {
+        "prefix": "twtable",
+        "body": [
+            "<div class=\"p-3\">",
+            "    <h1 class=\"text-2xl font-bold mb-4\">CRUD App</h1>",
+            "    <button class=\"mb-4 px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300\">",
+            "        Create",
+            "    </button>",
+            "    <div class=\"overflow-x-auto mt-4\">",
+            "        <table class=\"w-full text-sm text-left text-gray-700\">",
+            "            <thead class=\"text-xs uppercase bg-gray-50 text-gray-700\">",
+            "            <tr>",
+            "                <th scope=\"col\" class=\"px-6 py-3\">ID</th>",
+            "                <th scope=\"col\" class=\"px-6 py-3\">Title</th>",
+            "                <th scope=\"col\" class=\"px-6 py-3\">Body</th>",
+            "                <th scope=\"col\" class=\"px-6 py-3 w-70\">Actions</th>",
+            "            </tr>",
+            "            </thead>",
+            "            <tbody>",
+            "            <tr class=\"odd:bg-white even:bg-gray-50 border-b border-gray-200\">",
+            "                <td class=\"px-6 py-2 font-medium text-gray-900\">${1:ID}</td>",
+            "                <td class=\"px-6 py-2 text-gray-700\">${2:Title}</td>",
+            "                <td class=\"px-6 py-2 text-gray-700\">${3:Body}</td>",
+            "                <td class=\"px-6 py-2 space-x-1\">",
+            "                    <button class=\"cursor-pointer px-3 py-2 text-xs font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300\">",
+            "                        Edit",
+            "                    </button>",
+            "                    <button class=\"cursor-pointer px-3 py-2 text-xs font-medium text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300\">",
+            "                        Show",
+            "                    </button>",
+            "                    <button class=\"cursor-pointer px-3 py-2 text-xs font-medium text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300\">",
+            "                        Delete",
+            "                    </button>",
+            "                </td>",
+            "            </tr>",
+            "            </tbody>",
+            "        </table>",
+            "    </div>",
+            "</div>"
+        ],
+        "description": "Tailwind CSS Table with Actions (No Dark Mode, with CRUD Controls)"
+        },
+    "Tailwind Table with Actions": {
+        "prefix": "twtabled",
+        "body": [
+            "<div class=\"overflow-x-auto p-3 \">",
+            "    <table class=\"w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400\">",
+            "        <thead class=\"text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400\">",
+            "        <tr>",
+            "            <th scope=\"col\" class=\"px-6 py-3\">ID</th>",
+            "            <th scope=\"col\" class=\"px-6 py-3\">Title</th>",
+            "            <th scope=\"col\" class=\"px-6 py-3\">Body</th>",
+            "            <th scope=\"col\" class=\"px-6 w-70 py-3\">Actions</th>",
+            "        </tr>",
+            "        </thead>",
+            "        <tbody>",
+            "        <tr class=\"odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200\">",
+            "            <td class=\"px-6 py-2 font-medium text-gray-900 dark:text-white\">${1:ID}</td>",
+            "            <td class=\"px-6 py-2 text-gray-600 dark:text-gray-300\">${2:Title}</td>",
+            "            <td class=\"px-6 py-2 text-gray-600 dark:text-gray-300\">${3:Body}</td>",
+            "            <td class=\"px-6 py-2\">",
+            "                <button class=\"cursor-pointer px-3 py-2 text-xs font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800\">",
+            "                    Edit",
+            "                </button>",
+            "                <button class=\"cursor-pointer px-3 py-2 text-xs font-medium text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ml-1\">",
+            "                    Delete",
+            "                </button>",
+            "            </td>",
+            "        </tr>",
+            "        </tbody>",
+            "    </table>",
+            "</div>"
+        ],
+        "description": "Tailwind CSS Table with Actions"
+    },
+    "Tailwind Dashboard Box": {
+        "prefix": "twbox",
+        "scope": "javascript,jsx,php,html,blade",
+        "body": [
+            "<div class=\"flex justify-between gap-4 p-4\">",
+            "    <div class=\"bg-blue-500 text-white p-6 rounded-lg shadow-lg text-center flex-1 min-w-[200px] max-w-[300px]\">",
+            "        <h2 class=\"text-lg font-bold\">Users</h2>",
+            "        <p class=\"text-2xl font-semibold\">100</p>",
+            "    </div>",
+            "    <div class=\"bg-green-500 text-white p-6 rounded-lg shadow-lg text-center flex-1 min-w-[200px] max-w-[300px]\">",
+            "        <h2 class=\"text-lg font-bold\">Products</h2>",
+            "        <p class=\"text-2xl font-semibold\">102</p>",
+            "    </div>",
+            "    <div class=\"bg-yellow-500 text-white p-6 rounded-lg shadow-lg text-center flex-1 min-w-[200px] max-w-[300px]\">",
+            "        <h2 class=\"text-lg font-bold\">Orders</h2>",
+            "        <p class=\"text-2xl font-semibold\">200</p>",
+            "    </div>",
+            "    <div class=\"bg-red-500 text-white p-6 rounded-lg shadow-lg text-center flex-1 min-w-[200px] max-w-[300px]\">",
+            "        <h2 class=\"text-lg font-bold\">Sales</h2>",
+            "        <p class=\"text-2xl font-semibold\">300</p>",
+            "    </div>",
+            "</div>"
+        ],
+        "description": "Tailwind CSS Dashboard Boxes"
+    },
+    "Tailwind Toast Notification 1": {
+        "prefix": "twtoastr",
+        "scope": "php,html,blade,javascript,jsx",
+        "body": [
+            "<div id=\"toast\" x-data=\"{ show: true }\" x-show=\"show\" x-init=\"setTimeout(() => show = false, 3000)\" class=\"z-[9999] fixed top-10 right-10 flex items-center bg-white text-black text-sm font-medium px-4 py-3 rounded-lg shadow-lg border border-gray-300\">",
+            "    <!-- Success Icon -->",
+            "    <div class=\"bg-green-100 p-1 rounded-full mr-3\">",
+            "        <svg class=\"w-5 h-5 text-green-600\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">",
+            "            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path>",
+            "        </svg>",
+            "    </div>",
+            "",
+            "    <!-- Message -->",
+            "    <span>Success!</span>",
+            "",
+            "    <!-- Close Button -->",
+            "    <button onclick=\"document.getElementById('toast').remove()\" class=\"ml-4 text-gray-500 hover:text-black\">",
+            "        ✕",
+            "    </button>",
+            "</div>"
+        ],
+        "description": "Tailwind CSS Toast Notification"
+    },
+    "Tailwind Toast Notification": {
+        "prefix": "success-alert",
+        "body": [
+            "@session('success')",
+            "    <div class=\"flex items-center p-2 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-green-900 dark:text-green-300 dark:border-green-800\" role=\"alert\">",
+            "        <svg class=\"flex-shrink-0 w-8 h-8 mr-1 text-green-700 dark:text-green-300\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">",
+            "            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12l2 2 4-4\"></path>",
+            "        </svg>",
+            "        <span class=\"font-medium\"> ${1:{{ \\$value }}} </span>",
+            "    </div>",
+            "@endsession"
+        ],
+        "description": "Tailwind Success Alert Notification"
+    },
+    "Bootstrap Start": {
+        "prefix": "bhtml",
+        "scope": "php,html,blade,javascript,jsx",
+        "body": [
+            "<!DOCTYPE html>",
+            "<html>",
+            "<head>",
+            "    <title>Example - ItSolutionStuff.com</title>",
+            "    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\" crossorigin=\"anonymous\">",
+            "</head>",
+            "<body>",
+            "    <div class=\"container\">$0</div>",
+            "</body>",
+            "</html>"
+        ],
+        "description": "Bootstrap Start"
+    },
+    "Bootstrap Card": {
+        "prefix": "bcard",
+        "scope": "php,html,blade,javascript,jsx",
+        "body": [
+            "<div class=\"card mt-5\">",
+            "    <h3 class=\"card-header p-3\"> Example - ItSolutionStuff.com</h3>",
+            "    <div class=\"card-body\">",
+            "        $0",
+            "    </div>",
+            "</div>"
+        ],
+        "description": "Bootstrap Card"
+    },
+
+    "Ajax Request": {
+		"prefix": "$ajax",
+		"scope": "php,html,blade,javascript,jsx",
+		"body": [
+			"$.ajax({",
+			"\ttype: \"${1:POST}\",",
+			"\turl: \"${2:/your-endpoint}\",",
+			"\tdata: { ${3:key}: ${4:value} },",
+			"\tdataType: 'json',",
+			"\tsuccess: function(response) {",
+			"\t\t${5:// handle success}",
+			"\t},",
+			"\terror: function(error) {",
+			"\t\tconsole.log(error);",
+			"\t}",
+			"});"
+		],
+		"description": "jQuery Ajax POST request"
+	},
+    "Bootstrap Table": {
+        "prefix": "btable",
+        "scope": "php,html,blade,javascript,jsx",
+        "body": [
+            "<table class=\"table table-bordered table-striped\">",
+            "    <thead>",
+            "        <tr>",
+            "            <th>ID</th>",
+            "            <th>Title</th>",
+            "            <th>Body</th>",
+            "            <th width=\"250px\">Action</th>",
+            "        </tr>",
+            "    </thead>",
+            "    <tbody>",
+            "        <tr>",
+            "            <td>1</td>",
+            "            <td>Test</td>",
+            "            <td>Test</td>",
+            "            <td>",
+            "                <button class=\"btn btn-primary btn-sm\">Edit</button>",
+            "                <button class=\"btn btn-danger btn-sm\">Delete</button>",
+            "            </td>",
+            "        </tr>",
+            "    </tbody>",
+            "</table>"
+        ],
+        "description": "Bootstrap-styled HTML table with action buttons"
+    },
+     "Product Grid Card": {
+        "prefix": "product-card",
+        "body": [
+                "<div class=\"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6\">",
+                "    <div class=\"bg-white rounded-2xl shadow p-4 flex flex-col items-center\">",
+                "        <img ",
+                "            src=\"https://dummyimage.com/600x600/000/fff&text=Product\" ", 
+                "            alt=\"Product Image\" ", 
+                "            class=\"w-full h-60 object-cover rounded-md mb-4\"",
+                "        >",
+                "        <h2 class=\"text-lg font-semibold text-gray-700\">Product</h2>",
+                "        <p class=\"text-blue-600 font-bold text-md mb-2\">100</p>",
+                "        <a ", 
+                "            href=\"\" ", 
+                "            class=\"mt-auto inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition\"",
+                "        >",
+                "            View",
+                "        </a>",
+                "    </div>",
+                "</div>"
+            ],
+        "description": "TailwindCSS product grid card layout"
+    },
+    "Laravel Function Controller": {
+            "prefix": "fun",
+            "scope": "php,blade",
+            "body": [
+                "public function ${1:index}(Request \\$request)",
+                "{",
+                "    ",
+                "}"
+            ],
+            "description": "Laravel Controller Function with Request Parameter"
+        },
+    "Livewire Initialized Event Listener": {
+        "prefix": "lwinit",
+        "scope": "php,html,blade,javascript,jsx",
+        "body": [
+            "document.addEventListener('livewire:initialized', () => {",
+            "  $0",
+            "});"
+        ],
+        "description": "Livewire initialized event listener"
+    },
+    "Livewire Initialized Event ": {
+        "prefix": "lwevent",
+        "scope": "php,html,blade,javascript,jsx",
+        "body": [
+            "Livewire.on('name', (event) => {",
+            "  $0",
+            "});"
+        ],
+        "description": "Livewire initialized event listener"
+    },
+    "Chat Layout Design": {
+        "prefix": "chatdesign",
+        "scope": "php,html,blade,javascript,jsx",
+        "body": [
+            "<div class=\"flex h-[550px] text-sm border rounded-xl shadow overflow-hidden bg-white\">",
+            "    <!-- Left: User List -->",
+            "    <div class=\"w-1/4 border-r bg-gray-50\">",
+            "        <div class=\"p-4 font-bold text-gray-700 border-b\">Users</div>",
+            "        <div class=\"divide-y\">",
+            "            <div class=\"p-3 cursor-pointer hover:bg-blue-100 transition\">",
+            "                <div class=\"text-gray-800\">Test User</div>",
+            "                <div class=\"text-xs text-gray-500\">test@gmail.com</div>",
+            "            </div>",
+            "        </div>",
+            "    </div>",
+            "",
+            "    <!-- Right: Chat Section -->",
+            "    <div class=\"w-3/4 flex flex-col\">",
+            "        <!-- Header -->",
+            "        <div class=\"p-4 border-b bg-gray-50\">",
+            "            <div class=\"text-lg font-semibold text-gray-800\">Test User</div>",
+            "            <div class=\"text-xs text-gray-500\">test@gmail.com</div>",
+            "        </div>",
+            "",
+            "        <!-- Messages -->",
+            "        <div class=\"flex-1 p-4 overflow-y-auto space-y-2 bg-gray-50\">",
+            "            <div class=\"flex justify-end\">",
+            "                <div class=\"max-w-xs px-4 py-2 rounded-2xl shadow bg-blue-600 text-white\">",
+            "                    Hi, This is test",
+            "                </div>",
+            "            </div>",
+            "        </div>",
+            "",
+            "        <!-- Input -->",
+            "        <form class=\"p-4 border-t bg-white flex items-center gap-2\">",
+            "            <input ",
+            "                type=\"text\"",
+            "                class=\"flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-300\"",
+            "                placeholder=\"Type your message...\" />",
+            "            <button type=\"submit\"",
+            "                class=\"bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-full transition\">",
+            "                Send",
+            "            </button>",
+            "        </form>",
+            "    </div>",
+            "</div>"
+        ],
+        "description": "Chat UI layout with TailwindCSS"
+        },
+        "Basic THTML Layout": {
+            "prefix": "thtml",
+            "scope": "php,html,blade",
+            "body": [
+            "<!DOCTYPE html>",
+            "<html>",
+            "<head>",
+            "    <title>Youtube Demo - ItSolutionStuff.com</title>",
+            "    @vite(['resources/css/app.css', 'resources/js/app.js'])",
+            "</head>",
+            "<body>",
+            "    <div class=\"container mx-auto px-4 py-8\">",
+            "        <h1 class=\"font-bold text-gray-800 mb-8 text-4xl\">Products</h1>",        
+            "    </div>",
+            "</body>",
+            "</html>"
+            ],
+            "description": "Basic THTML layout with Tailwind and Vite"
+        },
+        "Centered Success Body": {
+            "prefix": "sbody",
+            "scope": "php,html,blade",
+            "body": [
+            "<body class=\"bg-gray-100 flex items-center justify-center h-screen\">",
+            "    <div class=\"text-center\">",
+            "        <svg class=\"w-20 h-20 mx-auto text-green-500\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">",
+            "            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12l2 2 4-4\"></path>",
+            "        </svg>",
+            "        <h1 class=\"mt-4 text-2xl font-bold text-gray-800\">${1:Payment Success}</h1>",
+            "    </div>",
+            "</body>"
+            ],
+            "description": "Centered success message with SVG icon"
+        },
+        "Tailwind Form Snippet": {
+    "prefix": "tform",
+    "body": [
+      "<form class=\"space-y-6 mt-4 max-w-md mx-auto\">",
+      "",
+      "    <div class=\"grid gap-2\">",
+      "        <label for=\"name\" class=\"text-sm leading-none font-medium select-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50\">",
+      "            Name:",
+      "        </label>",
+      "        <input",
+      "            id=\"name\"",
+      "            name=\"name\"",
+      "            class=\"mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-base shadow-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500\"",
+      "            placeholder=\"Enter your name\"",
+      "        />",
+      "        <p class=\"text-red-500 text-sm mt-1\">Name field is required.</p>",
+      "    </div>",
+      "",
+      "    <button",
+      "        type=\"submit\"",
+      "        class=\"bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition\"",
+      "    >",
+      "        Submit",
+      "    </button>",
+      "",
+      "</form>"
+    ],
+    "description": "Tailwind styled form with a name input and submit button"
+  },
+  "Tailwind Checkbox": {
+    "prefix": "tcheckbox",
+    "body": [
+      "<label key=\"1\" class=\"flex items-center space-x-2\">",
+      "    <input",
+      "        type=\"checkbox\"",
+      "        class=\"form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500\"",
+      "    />",
+      "    <span class=\"text-gray-800 capitalize\">Admin</span>",
+      "</label>"
+    ],
+    "description": "Tailwind styled checkbox label with text"
+  },
+  "Tailwind Badge": {
+    "prefix": "tbadge",
+    "body": [
+      "<span",
+      "    key=\"1\"",
+      "    class=\"mr-1 bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300\"",
+      ">",
+      "    1",
+      "</span>"
+    ],
+    "description": "Tailwind styled badge element"
+  },
+  "Simple Pagination": {
+    "prefix": "spagination",
+    "body": [
+      "<div class=\"flex flex-wrap items-center space-x-1 mt-4\">",
+      "    {links.map((link, index) => (",
+      "        <Link",
+      "            key={index}",
+      "            href={link.url ?? '#'}",
+      "            dangerouslySetInnerHTML={{ __html: link.label }}",
+      "            class={`px-3 py-1 text-sm rounded border ",
+      "                ${link.active ? 'bg-blue-600 text-white' : 'bg-white text-gray-700'} ",
+      "                ${!link.url ? 'opacity-50 pointer-events-none' : 'hover:bg-gray-100'}`}",
+      "        />",
+      "    ))}",
+      "</div>"
+    ],
+    "description": "Simple pagination component using Tailwind and dynamic link rendering"
+  },
+  "Vue Pagination with Link": {
+    "prefix": "vpagination",
+    "body": [
+      "<div class=\"flex flex-wrap items-center space-x-1 mt-4\">",
+      "    <Link",
+      "        v-for=\"(link, index) in links\"",
+      "        :key=\"index\"",
+      "        :href=\"link.url || '#'\"",
+      "        v-html=\"link.label\"",
+      "        class=\"px-3 py-1 text-sm rounded border\"",
+      "        :class=\"[",
+      "            link.active ? 'bg-blue-600 text-white' : 'bg-white text-gray-700',",
+      "            !link.url ? 'opacity-50 pointer-events-none' : 'hover:bg-gray-100'",
+      "        ]\"",
+      "    />",
+      "</div>"
+    ],
+    "description": "Pagination component using v-for and Link"
+  },
+  "Node.js app.listen snippet": {
+    "prefix": "nodeport",
+    "body": [
+        "app.listen(PORT, () => {",
+        "  console.log(`Server running at http://localhost:${PORT}`);",
+        "});"
+    ],
+    "description": "Start server and log the running URL"
+    },
+    "Node.js MySQL createConnection snippet": {
+        "prefix": "nodemysql",
+        "body": [
+            "const db = mysql.createConnection({",
+            "  host: 'localhost',",
+            "  user: 'root',",
+            "  database: 'database',",
+            "  password: 'password',",
+            "});"
+        ],
+        "description": "Create a MySQL connection"
+    },
+    "Node.js Express error handler snippet": {
+    "prefix": "nodeerror",
+    "body": [
+        "if (err) return res.status(500).json({ error: err.message });"
+    ],
+    "description": "Express error response shorthand"
+    },
+    "Tailwind Dashboard Layout (tdash)": {
+  "prefix": "tdash",
+  "body": [
+    "<div class=\"flex h-screen bg-gray-100\">",
+    "    <aside class=\"w-64 bg-white shadow-md p-5\">",
+    "        <h2 class=\"text-xl font-bold mb-6\">My App</h2>",
+    "        <nav class=\"flex flex-col space-y-3\">",
+    "            <a class=\"text-gray-700 hover:text-blue-600\">Dashboard</a>",
+    "        </nav>",
+    "    </aside>",
+    "",
+    "    <div class=\"flex-1 flex flex-col\">",
+    "        <header class=\"bg-white shadow px-6 py-4\">",
+    "            <h1 class=\"text-2xl font-semibold text-gray-800\">Dashboard</h1>",
+    "        </header>",
+    "",
+    "        <main class=\"flex-1 p-6\">",
+    "            <p class=\"text-gray-700 text-lg\">Hi,  👋</p>",
+    "        </main>",
+    "    </div>",
+    "</div>"
+  ],
+  "description": "Simplified Tailwind dashboard layout with sidebar and topbar"
+},
+"Tailwind Error Alert (terror)": {
+  "prefix": "terrors",
+  "body": [
+    "<div class=\"mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded\">",
+    "    <ul class=\"list-disc pl-5 space-y-1 text-sm\">",
+    "        <li key=\"${1}\">${2:Error message}</li>",
+    "    </ul>",
+    "</div>"
+  ],
+  "description": "Tailwind styled error alert box for React/JSX"
+},
+"React Functional Component": {
+    "prefix": "edf",
+    "body": [
+      "export default function ${1:FunName}() {",
+      "  return (",
+      "    <>",
+      "      <p>Hello</p>",
+      "    </>",
+      "  );",
+      "}"
+    ],
+    "description": "Export default React functional component"
+  }
+
+}
+
+def convert_to_phpstorm_template(name, data):
+    body = "\n".join(data['body'])
+    body = html.escape(body)
+
+    # Find and replace VS Code-style placeholders
+    placeholders = re.findall(r'\$\{(\d+):([^\}]+)\}', body)
+    variables = []
+    for idx, var in placeholders:
+        body = body.replace(f"${{{idx}:{var}}}", f"${var}$")
+        variables.append(var)
+
+    # Generate XML
+    template = f'  <template name="{data["prefix"]}" value="{body}" description="{html.escape(data["description"])}" toReformat="false" toShortenFQNames="false">\n'
+    for var in variables:
+        template += f'    <variable name="{var}" expression="" defaultValue="" alwaysStopAt="true"/>\n'
+    template += '    <context>\n      <option name="Vue" value="true"/>\n    </context>\n'
+    template += '    <context>\n      <option name="HTML_TEXT" value="true"/>\n    </context>\n'
+    template += '    <context>\n      <option name="HTML" value="true"/>\n    </context>\n'
+    template += '    <context>\n      <option name="PHP" value="true"/>\n    </context>\n'
+    template += '    <context>\n      <option name="Twig" value="true"/>\n    </context>\n'
+    template += '  </template>\n'
+    return template
+
+# Wrap all snippets in a templateSet
+output = '<templateSet group="TailwindSnippets">\n'
+for name, data in snippets.items():
+    output += convert_to_phpstorm_template(name, data)
+output += '</templateSet>'
+
+# Print the final XML
+with open("TailwindSnippets.xml", "w") as f:
+    f.write(output)
+
+print("✅ PHPStorm Live Template saved to TailwindSnippets.xml")
+
