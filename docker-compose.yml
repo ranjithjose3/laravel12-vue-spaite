@@ -23,10 +23,11 @@ services:
             - sail
         depends_on:
             - pgsql
+        command: /var/www/html/docker/startup.sh
     pgsql:
         image: 'postgres:17'
         ports:
-            - '${FORWARD_DB_PORT:-5432}:5432'
+            - '${FORWARD_DB_PORT:-5435}:5432'
         environment:
             PGPASSWORD: '${DB_PASSWORD:-secret}'
             POSTGRES_DB: '${DB_DATABASE}'
