@@ -114,6 +114,13 @@ const updatePassword = () => {
                     </div>
                 </form>
             </div>
+            <div>
+                <FileUpload name="files" />
+                <DataTable :value="items">
+                    <Column field="name" header="Name" />
+                </DataTable>
+                <a :href="route('dashboard')">Go to Dashboard</a>
+            </div>
         </SettingsLayout>
     </AppLayout>
 </template>

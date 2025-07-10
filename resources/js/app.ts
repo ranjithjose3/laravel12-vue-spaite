@@ -7,21 +7,41 @@ import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
 import { initializeTheme } from './composables/useAppearance';
 
+import PrimeVue from 'primevue/config';
+import Aura from '@primeuix/themes/aura'; // ✅ PrimeVue Aura theme
+import 'primeicons/primeicons.css'; // ✅ PrimeIcons for icons
+
+// ✅ Your used components
+import FileUpload from 'primevue/fileupload';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
-    resolve: (name) => resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
+    resolve: (name) =>
+        resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
-            .use(plugin)
-            .use(ZiggyVue)
-            .mount(el);
+        const vueApp = createApp({ render: () => h(App, props) });
+
+        vueApp.use(plugin);
+        vueApp.use(ZiggyVue);
+        vueApp.use(PrimeVue, {
+            theme: {
+                preset: Aura,
+            },
+        });
+
+        vueApp.component('FileUpload', FileUpload);
+        vueApp.component('DataTable', DataTable);
+        vueApp.component('Column', Column);
+
+        vueApp.mount(el);
     },
     progress: {
         color: '#4B5563',
     },
 });
 
-// This will set light / dark mode on page load...
 initializeTheme();
